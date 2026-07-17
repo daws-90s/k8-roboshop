@@ -4,7 +4,7 @@ metadata:
   name: mysql
 type: Opaque
 data:
-  MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  MYSQL_ALLOW_EMPTY_PASSWORD: "eWVzCg=="
 ---
 apiVersion: apps/v1
 kind: Deployment
