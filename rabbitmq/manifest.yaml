@@ -1,59 +1,59 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mysql
-  namespace: roboshop
+  name: rabbitmq
 type: Opaque
 data:
-  MYSQL_ALLOW_EMPTY_PASSWORD: "eWVzCg=="
+  RABBITMQ_DEFAULT_USER: cm9ib3Nob3AK
+  RABBITMQ_DEFAULT_PASS: cm9ib3Nob3AxMjMK
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: rabbitmq
   namespace: roboshop
+  # labels related to deployment resource
   labels:
     project: roboshop
     tier: db
-    component: mysql
+    component: rabbitmq
 spec:
   replicas: 1
   selector:
     matchLabels:
       project: roboshop
       tier: db
-      component: mysql
+      component: rabbitmq
   # Pod
   template:
     metadata:
       labels:
         project: roboshop
         tier: db
-        component: mysql
+        component: rabbitmq
     spec:
       containers:
-      - name: mysql
-        image: joindevops/mysql:4.0.0
-        args: ["--mysql-native-password=ON"]
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: "RoboShop@1"
+      - name: rabbitmq
+        image: rabbitmq:3
+        envFrom:
+        - secretRef:
+            name: rabbitmq
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: rabbitmq
   namespace: roboshop
   labels:
     project: roboshop
     tier: db
-    component: mysql
+    component: rabbitmq
 spec:
   selector:
     project: roboshop
     tier: db
-    component: mysql
+    component: rabbitmq
   ports:
     - protocol: TCP
-      port: 3306 # service port
-      targetPort: 3306 # container port
+      port: 6379 # service port
+      targetPort: 6379 # container port
