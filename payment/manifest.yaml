@@ -85,7 +85,6 @@ metadata:
     tier: backend
     component: payment
 spec:
-  # Service uses the below labels to select the pods
   selector:
     project: roboshop
     tier: backend
